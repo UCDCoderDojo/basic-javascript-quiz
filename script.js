@@ -13,6 +13,15 @@ const questions = [{
         "an unladen swallow"
     ],
     "correct": 1
+}, {
+    "question": "what is your quest?",
+    "answers":[
+        "I want a big mac",
+        "I just like round animals",
+        "I seek the holy grail",
+        "I..uh...what?"
+    ],
+    "correct": 1
 }]
 
 function createAnswerElement(value, text) {
@@ -21,8 +30,10 @@ function createAnswerElement(value, text) {
 }
 
 let current = 0;
+let score = 0;
 function loadQuestion(index) {
     const questionObj = questions[index];
+    answerField.innerHTML = "";
     questionField.innerHTML = questionObj["question"];
     for(let i =0; i<questionObj["answers"].length;i++) {
         const answer = questionObj["answers"][i];
@@ -30,9 +41,16 @@ function loadQuestion(index) {
     }
 }
 
+function endQuiz() {
+    let result = score + "/" + questions.length;
+    questionField.innerHTML = "";
+    answersField.innerHTML = "";
+    banner.innerHTML = "Your score is: " + resul;
+}
+
 function correctAnswer(value) {
     const correctAnswer = questions[current]["correct"];
-    return value == correctAnswer;
+    return value === correctAnswer;
 }
 
 function checkAnswer() {
@@ -45,10 +63,15 @@ function checkAnswer() {
         }
 
         if (correctAnswer(parseInt(answer.value))) {
-            alert("correct!");
-        } else {
-            alert("WRONG");
+            score++;
+        } 
+        current++;
+        if (current < questions.length) {
+            loadQuestion(current);
+            return;
         }
+
+        endQuiz();
     }
 }
 
